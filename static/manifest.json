@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Duplicate Scout",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Find duplicate tabs and bookmarks locally, generate reports, group duplicate tabs, and move duplicate bookmarks into a review folder.",
   "permissions": [
     "tabs",
