@@ -1,6 +1,6 @@
 {
   "name": "firefox-duplicate-scout",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "description": "Firefox extension to analyze duplicate tabs and bookmarks locally, group/mark duplicates, and generate detailed reports.",
   "type": "module",
