@@ -2,27 +2,28 @@ name: CI
 
 on:
   push:
+    branches:
+      - main
   pull_request:
-
-permissions:
-  contents: read
+    branches:
+      - main
 
 jobs:
-  validate:
+  check:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
-      - run: npm install
-      - run: npm run typecheck
-      - run: npm run lint
-      - run: npm test
-      - run: npm run webext:lint
-      - run: npm run package:xpi
-      - uses: actions/upload-artifact@v4
-        with:
-          name: unsigned-firefox-package
-          path: artifacts/*.zip
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks
+        run: npm run check
