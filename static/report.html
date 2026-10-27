@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Duplicate Scout report</title>
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body>
+    <main class="report-shell">
+      <header class="report-header">
+        <div>
+          <p class="eyebrow">Duplicate Scout</p>
+          <h1 id="title">Duplicate report</h1>
+          <p id="summary">Analyzing…</p>
+        </div>
+        <div class="report-actions">
+          <button id="refresh">Refresh</button>
+          <button id="primary-action" class="primary" hidden></button>
+          <button id="destructive-action" class="danger-outline" hidden></button>
+        </div>
+      </header>
+
+      <section class="toolbar" aria-label="Report filters">
+        <label>
+          Show
+          <select id="filter">
+            <option value="all">All entries</option>
+            <option value="duplicates">Duplicates only</option>
+            <option value="unique">Unique only</option>
+          </select>
+        </label>
+        <label>
+          Search
+          <input id="search" type="search" placeholder="Title, URL, or folder" />
+        </label>
+      </section>
+
+      <p id="status" class="status" aria-live="polite"></p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="duplicate">Duplicate</th>
+              <th data-sort="title">Name</th>
+              <th data-sort="url">URL</th>
+              <th data-sort="baseUrl">Base URL</th>
+              <th>URL parameters</th>
+              <th data-sort="bookmarkPath" class="bookmark-only">Folder</th>
+              <th data-sort="bookmarkDepth" class="bookmark-only">Scope</th>
+              <th data-sort="groupSize">Group size</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="privacy-note">All analysis happens locally in Firefox. No tab or bookmark data is sent anywhere.</p>
+    </main>
+    <script type="module" src="report.js"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Duplicate Scout</title>
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body class="popup-page">
+    <main class="popup-card">
+      <header>
+        <h1>Duplicate Scout</h1>
+        <p>Analyze duplicate tabs in the current Firefox window.</p>
+      </header>
+      <div class="action-stack">
+        <button id="analyze" class="primary">Analyze tabs</button>
+        <button id="group">Group / mark duplicates</button>
+        <button id="close" class="danger-outline">Close duplicate tabs</button>
+      </div>
+      <p id="status" class="status" aria-live="polite"></p>
+      <footer>
+        <button id="options" class="link-button">Matching settings</button>
+      </footer>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

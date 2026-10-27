@@ -1,0 +1,35 @@
+{
+  "name": "firefox-duplicate-scout",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Firefox extension to analyze duplicate tabs and bookmarks locally, group/mark duplicates, and generate detailed reports.",
+  "type": "module",
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "build": "node scripts/build.mjs",
+    "build:watch": "node scripts/build.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "firefox": "npm run build && web-ext run --source-dir dist",
+    "firefox:dev": "web-ext run --source-dir dist",
+    "webext:lint": "npm run build && web-ext lint --source-dir dist",
+    "package:xpi": "npm run build && web-ext build --source-dir dist --artifacts-dir artifacts --overwrite-dest",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run webext:lint"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "@types/firefox-webext-browser": "^143.0.1",
+    "esbuild": "^0.25.11",
+    "eslint": "^9.38.0",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2",
+    "vitest": "^3.2.4",
+    "web-ext": "^10.8.0"
+  }
+}

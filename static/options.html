@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Duplicate Scout settings</title>
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body>
+    <main class="settings-shell">
+      <header>
+        <p class="eyebrow">Duplicate Scout</p>
+        <h1>Matching settings</h1>
+        <p>These settings affect both open tabs and bookmark folders.</p>
+      </header>
+
+      <form id="settings-form" class="settings-form">
+        <label>
+          Ignored query parameters
+          <textarea id="ignored-params" rows="6" placeholder="One per line"></textarea>
+          <small>These parameters are removed before comparing URLs.</small>
+        </label>
+        <label>
+          Ignored parameter prefixes
+          <textarea id="ignored-prefixes" rows="4" placeholder="One per line"></textarea>
+          <small>For example, <code>utm_</code> removes all UTM tracking parameters.</small>
+        </label>
+        <label>
+          Identity parameters
+          <textarea id="identity-params" rows="6" placeholder="One per line"></textarea>
+          <small>If one of these exists, the base URL + identity parameter is preferred as the duplicate key.</small>
+        </label>
+        <label class="checkbox-row">
+          <input id="ignore-hash" type="checkbox" />
+          Ignore URL fragments (#section)
+        </label>
+        <label class="checkbox-row">
+          <input id="strip-www" type="checkbox" />
+          Treat www.example.com and example.com as the same host
+        </label>
+        <div class="button-row">
+          <button type="submit" class="primary">Save settings</button>
+          <button id="reset" type="button">Reset defaults</button>
+        </div>
+      </form>
+      <p id="status" class="status" aria-live="polite"></p>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

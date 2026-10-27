@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Duplicate Scout",
+  "version": "0.1.0",
+  "description": "Find duplicate tabs and bookmarks locally, generate reports, group duplicate tabs, and move duplicate bookmarks into a review folder.",
+  "permissions": [
+    "tabs",
+    "bookmarks",
+    "menus",
+    "storage",
+    "tabGroups"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Duplicate Scout",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "duplicate-scout@local",
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  }
+}
