@@ -18,7 +18,9 @@
     "firefox:dev": "web-ext run --source-dir dist",
     "webext:lint": "npm run build && web-ext lint --source-dir dist",
     "package:xpi": "npm run build && web-ext build --source-dir dist --artifacts-dir artifacts --overwrite-dest",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run webext:lint"
+    "check": "npm run typecheck && npm run lint && npm run test && npm run webext:lint",
+    "package": "npm run build && web-ext build --source-dir dist --artifacts-dir artifacts",
+    "package:overwrite": "npm run build && web-ext build --overwrite-dest --source-dir dist --artifacts-dir artifacts"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
