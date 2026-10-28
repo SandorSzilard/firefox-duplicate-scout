@@ -1,176 +1,202 @@
 # Duplicate Scout for Firefox
 
-Duplicate Scout is a local-first Firefox WebExtension for finding and reviewing duplicate open tabs and duplicate bookmarks.
+Duplicate Scout is an open-source Firefox extension for finding and managing duplicate tabs and bookmarks.
 
-It is written in TypeScript, built with esbuild, unit-tested with Vitest, validated with Mozilla `web-ext`, and structured for GitHub/CI plus eventual publication on addons.mozilla.org (AMO).
+Everything runs locally in Firefox. No browsing data, bookmark data, analytics, or telemetry is sent anywhere.
 
-## What it does
+## Features
 
-### Open tabs
+### Tabs
 
-Use the toolbar popup, tab context menu, or Firefox Tools menu to:
+Duplicate Scout can:
 
-- **Analyze tabs**: open a report tab with every tab listed.
-- **Group / mark duplicates**: create one Firefox tab group per duplicate set and assign Firefox group colors.
-- **Close duplicate tabs**: keep the first occurrence and close later occurrences after confirmation.
+- Analyze all tabs in the current Firefox window
+- Detect duplicate URLs
+- Show duplicates in a detailed report
+- Preserve the original Firefox tab order in the report
+- Highlight duplicate groups with matching colors
+- Group duplicate tabs using Firefox tab groups
+- Close duplicate tabs while keeping the first occurrence
 
-### Bookmark folders
+### Bookmarks
 
-Right-click a bookmark folder (or a bookmark inside the folder) and choose **Find duplicates in bookmark folder**.
+Right-click a bookmark folder and choose **Find duplicates in bookmark folder**.
 
-The report can:
+Duplicate Scout can:
 
-- recursively analyze bookmarks in the selected folder and its nested subfolders;
-- highlight each duplicate set with a consistent report color;
-- show the bookmark folder/path and whether each result is in the selected folder or a nested folder;
-- move extra occurrences that are **direct children of the selected folder only** into a new `Duplicates` subfolder (or `Duplicates (2)`, etc.);
-- permanently delete extra occurrences after explicit confirmation.
+- Analyze the selected folder recursively
+- Detect duplicates across nested folders
+- Show the folder path and nesting level for every bookmark
+- Highlight duplicate groups in the report
+- Move duplicate bookmarks into a `Duplicates` subfolder
+- Delete duplicate bookmarks after confirmation
 
-The move action is intentionally safer than immediate deletion: the first occurrence stays in place and the extra bookmarks are collected in a review folder that can be deleted manually later.
+For safety, **move and delete actions only affect bookmarks directly inside the selected folder**.
 
-## Duplicate matching
+Nested folders are analyzed, but they are never modified automatically.
 
-Titles are displayed in the report but are **not** used as the main duplicate criterion.
+## Duplicate detection
 
-For HTTP(S) URLs the matcher:
+Duplicate Scout primarily compares URLs, not page titles.
 
-1. normalizes host/path formatting;
-2. removes configured tracking parameters (`utm_*`, `fbclid`, `gclid`, etc. by default);
-3. ignores fragments by default;
-4. sorts remaining query parameters;
-5. if a configured identity parameter exists (`id`, `v`, `post_id`, etc.), compares the base URL + that identity value;
-6. otherwise compares the normalized full URL;
-7. canonicalizes common YouTube watch, Shorts, and `youtu.be` video URLs by video ID.
+The matcher can:
 
-Example:
+- Normalize URLs
+- Ignore URL fragments
+- Ignore common tracking parameters such as `utm_*`, `fbclid`, and `gclid`
+- Compare important identity parameters such as `id` and `v`
+- Normalize common YouTube video URLs
+- Distinguish different resources even when their page titles are identical
+
+For example:
 
 ```text
-https://example.com/article?id=42&utm_source=a
-https://example.com/article?id=42&utm_source=b
+https://example.com/article?id=42&utm_source=google
+https://example.com/article?id=42&utm_source=reddit
 ```
 
 These are considered duplicates.
+
+But:
 
 ```text
 https://youtube.com/watch?v=AAA
 https://youtube.com/watch?v=BBB
 ```
 
-These are not duplicates even if their titles happen to match.
+are different videos.
 
-## Report columns
+## Report
 
-The report shows:
+The analysis report can display:
 
-- Duplicate (`✔` / `✗`)
-- Name/title
-- URL
+- Duplicate status (`✔` / `✗`)
+- Title
+- Full URL
 - Base URL
 - URL parameters
-- Bookmark folder/path and scope (bookmark reports only)
 - Duplicate group size
+- Bookmark folder/path
+- Bookmark nesting level
 
-Rows belonging to the same duplicate set receive the same generated report highlight. The report can be filtered to all/duplicate/unique entries and searched by title, URL, or bookmark folder path.
+Duplicate groups receive matching row colors.
+
+The default report order matches the original tab or bookmark order. Columns can also be sorted manually.
 
 ## Privacy
 
-Everything happens locally in Firefox. The extension contains no network requests, analytics, telemetry, advertising SDKs, remote code, or backend service. See [PRIVACY.md](PRIVACY.md).
+Duplicate Scout works entirely locally.
 
-## Requirements
+It does not:
 
-- Firefox **139+** (the extension uses the stable `tabGroups` WebExtension API)
-- Node.js 22+ for development
+- Send tabs or bookmarks to a server
+- Upload browsing history
+- Use analytics or telemetry
+- Require an account
+- Use advertising
+- Use remote code
+- Connect to a backend service
 
-## Development setup
+See [PRIVACY.md](PRIVACY.md) for more information.
+
+## Installation for development
+
+Requirements:
+
+- Firefox 142+
+- Node.js 24+
+- npm
+
+Clone the repository and install dependencies:
 
 ```bash
 npm install
+```
+
+Run all validation checks:
+
+```bash
 npm run check
 ```
 
-After the first successful install, commit the generated `package-lock.json` and you can switch CI from `npm install` to `npm ci` for fully locked/reproducible dependency installs.
-
-Build the extension:
-
-```bash
-npm run build
-```
-
-The loadable extension is produced in `dist/`.
-
-### Run in a temporary Firefox profile
+Launch a temporary Firefox instance with the extension:
 
 ```bash
 npm run firefox
 ```
 
-This builds the extension and launches it through Mozilla `web-ext`.
+You can also build the extension manually:
 
-You can also load `dist/manifest.json` manually from:
+```bash
+npm run build
+```
+
+The built extension is written to:
+
+```text
+dist/
+```
+
+To load it manually:
 
 ```text
 about:debugging
 → This Firefox
 → Load Temporary Add-on
+→ select dist/manifest.json
 ```
-
-### Watch TypeScript
-
-In one terminal:
-
-```bash
-npm run build:watch
-```
-
-In another, after an initial build:
-
-```bash
-npm run firefox:dev
-```
-
-If you edit HTML/CSS/manifest files under `static/`, rerun the build because the simple watch script watches bundled TypeScript only.
 
 ## Testing
+
+Run the unit tests:
 
 ```bash
 npm test
 ```
 
-The URL normalization and duplicate engine are browser-independent and covered by unit tests.
-
-Other validation commands:
-
-```bash
-npm run typecheck
-npm run lint
-npm run format:check
-npm run webext:lint
-```
-
-Run the primary validation suite:
+Run the complete validation suite:
 
 ```bash
 npm run check
 ```
 
+This includes TypeScript checks, linting, tests, building, and Mozilla `web-ext` validation.
+
 ## Packaging
 
-Create an unsigned distributable ZIP:
+Create the Firefox extension package:
 
 ```bash
-npm run package:xpi
+npm run package
 ```
 
-`web-ext` writes the package to `artifacts/`. Firefox Release/Beta requires Mozilla signing before permanent installation.
+The generated ZIP is written to:
 
-## Repository structure
+```text
+artifacts/
+```
+
+To rebuild and overwrite an existing package:
+
+```bash
+npm run package:overwrite
+```
+
+Create a source-code archive for Mozilla Add-ons review:
+
+```bash
+npm run source:zip
+```
+
+## Project structure
 
 ```text
 src/
-  background.ts          Firefox event/background entrypoint
-  browser/               Firefox API adapters (tabs, bookmarks, settings)
-  core/                  Pure duplicate detection / URL normalization
-  ui/                    Popup, report, and options TypeScript
+  background.ts
+  browser/        Firefox API integration
+  core/           URL normalization and duplicate detection
+  ui/             Popup, report, and options logic
+
 static/
   manifest.json
   popup.html
@@ -178,35 +204,78 @@ static/
   options.html
   ui.css
   icons/
-tests/                    Vitest unit tests
-scripts/                  Build/clean scripts
-docs/                     AMO listing and release notes
-.github/workflows/        GitHub Actions CI
+
+tests/            Unit tests
+scripts/          Build scripts
+docs/             Release and AMO documentation
+.github/          GitHub Actions workflows
 ```
 
-## Important behavior notes
+## Mozilla Add-ons reviewer build instructions
 
-- Bookmark **analysis is recursive** and includes nested subfolders in the report. Each bookmark row shows its folder/path and whether it is directly in the selected folder or nested.
-- Bookmark **move/delete actions are intentionally non-recursive**. They only affect duplicate bookmarks that are direct children of the folder the user selected; nested folders are never modified by these actions.
-- The first occurrence is determined by the order returned by Firefox (tab order for tabs, bookmark order for a folder).
-- Non-HTTP(S) entries such as `about:` URLs are shown but are not duplicate-compared.
-- Firefox exposes a fixed set of tab-group colors, so colors are reused when there are more duplicate sets than available Firefox colors.
+Duplicate Scout is written in TypeScript and bundled using esbuild.
 
-## GitHub / AMO
+### Requirements
 
-The repository includes:
+- Node.js 24
+- npm
 
-- MIT license
-- privacy policy
-- security policy
-- contribution instructions
-- changelog
-- GitHub Actions validation/package workflow
-- suggested AMO listing copy and permission explanations
-- release checklist
+Install the exact dependencies from `package-lock.json`:
 
-Before first public AMO submission, replace the placeholder extension ID (`duplicate-scout@local`) in `static/manifest.json` with the permanent ID you intend to keep, and update project/repository contact details as desired.
+```bash
+npm ci
+```
+
+Run the complete validation suite:
+
+```bash
+npm run check
+```
+
+Build the unpacked extension:
+
+```bash
+npm run build
+```
+
+The result is written to:
+
+```text
+dist/
+```
+
+Create the distributable extension package:
+
+```bash
+npm run package
+```
+
+The package is written to:
+
+```text
+artifacts/
+```
+
+Create the source-code archive:
+
+```bash
+npm run source:zip
+```
+
+No runtime network requests are made by Duplicate Scout.
+
+All tab analysis, bookmark analysis, URL normalization, duplicate detection, grouping, reporting, and settings functionality runs locally inside Firefox.
+
+## Contributing
+
+Contributions and bug reports are welcome.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for security reporting information.
 
 ## License
 
-MIT
+Duplicate Scout is released under the [MIT License](LICENSE).
