@@ -1,32 +1,77 @@
-# Suggested AMO listing copy
+# Duplicate Scout — AMO Listing
 
 ## Name
+
 Duplicate Scout
 
 ## Summary
-Find duplicate tabs and bookmarks locally, review them in a detailed report, then group, close, move, or delete duplicates safely.
+
+Find, review, group, and safely manage duplicate Firefox tabs and bookmarks.
 
 ## Description
-Duplicate Scout helps clean up crowded Firefox sessions and bookmark folders without sending browsing data anywhere.
 
-Features:
-- Analyze all tabs in the current Firefox window.
-- Right-click a bookmark or bookmark folder and open a recursive duplicate report for that folder, including nested subfolders and their paths.
-- Move/delete actions remain intentionally limited to duplicate bookmarks directly inside the selected folder; nested folders are never modified.
-- Group duplicate tab sets using Firefox tab groups and distinct group colors.
-- Close extra duplicate tabs while keeping the first occurrence.
-- Move extra duplicate bookmarks into a generated `Duplicates` subfolder for easy review/removal.
-- Generate a sortable/filterable report showing duplicate status, title, URL, base URL, parameters, and group size.
-- Normalize common tracking parameters and recognize common identity parameters such as `id` and `v`.
-- Configurable matching rules.
-- No analytics, telemetry, remote scripts, or network services.
+Duplicate Scout helps you find duplicate tabs and bookmarks while keeping all analysis local inside Firefox.
 
-## Permissions explanation
-- `tabs`: read tab titles/URLs and close/group duplicate tabs.
-- `bookmarks`: inspect and optionally move/delete duplicate bookmarks.
-- `menus`: add bookmark/tab/tools context-menu entries.
-- `storage`: save matching preferences locally.
-- `tabGroups`: color/name Firefox tab groups created for duplicates.
+### Tabs
 
-## Privacy
-All analysis happens locally in Firefox. See `PRIVACY.md` in the source repository.
+Duplicate Scout can:
+
+- Analyze all tabs in the current Firefox window
+- Detect duplicate URLs
+- Preserve the original tab order in the report
+- Highlight duplicate groups with matching colors
+- Group duplicate tabs using Firefox tab groups
+- Close duplicate tabs while keeping the first occurrence
+
+### Bookmarks
+
+Duplicate Scout can:
+
+- Analyze a selected bookmark folder recursively
+- Detect duplicate bookmarks across nested folders
+- Show each bookmark's folder path and nesting level
+- Highlight duplicate groups in the report
+- Move duplicate bookmarks into a `Duplicates` subfolder
+- Delete duplicate bookmarks after confirmation
+
+For safety, move and delete operations only affect duplicate bookmarks that are direct children of the selected folder.
+
+Nested folders can be analyzed, but they are never modified automatically.
+
+### Duplicate detection
+
+Duplicate Scout primarily compares URLs rather than page titles.
+
+It can normalize URLs, ignore common tracking parameters, recognize important identity parameters such as `id` and `v`, and normalize common YouTube video URLs.
+
+### Privacy
+
+Duplicate Scout works entirely locally in Firefox.
+
+It does not:
+
+- Send tabs or bookmarks to a server
+- Upload browsing history
+- Use analytics or telemetry
+- Require an account
+- Use advertising
+- Use remote code
+- Connect to a backend service
+
+All duplicate detection and reporting happens locally in the browser.
+
+## Suggested category
+
+Tabs / Bookmarks / Productivity
+
+## License
+
+MIT
+
+## Source code
+
+The source code is publicly available on GitHub.
+
+## Support
+
+Bug reports and feature requests can be submitted through GitHub Issues.
